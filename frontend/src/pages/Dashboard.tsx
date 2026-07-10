@@ -187,15 +187,16 @@ const Dashboard = () => {
       <Grid container spacing={2.5} sx={{ mb: 3.5 }}>
         {/* Donut Chart — Assets by Category */}
         <Grid size={{ xs: 12, md: 6 }}>
-          <Paper sx={{ p: 3, height: '100%' }}>
+          <Paper sx={{ p: 3, height: '100%', backdropFilter: 'none !important' }}>
             <Typography variant="h6" sx={{ fontWeight: 600, color: '#e2e8f0', mb: 2 }}>
               Assets by Category
             </Typography>
             {loading ? (
               <Skeleton variant="circular" width={220} height={220} sx={{ mx: 'auto' }} />
             ) : stats && (
-              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
                 <PieChart
+                  tooltip={{ trigger: 'item' }}
                   series={[{
                     data: Object.entries(stats.by_category || {}).map(([label, value]: [string, any], i: number) => ({
                       id: i,
@@ -225,15 +226,17 @@ const Dashboard = () => {
 
         {/* Bar Chart — Assets by Status */}
         <Grid size={{ xs: 12, md: 6 }}>
-          <Paper sx={{ p: 3, height: '100%' }}>
+          <Paper sx={{ p: 3, height: '100%', backdropFilter: 'none !important' }}>
             <Typography variant="h6" sx={{ fontWeight: 600, color: '#e2e8f0', mb: 2 }}>
               Assets by Status
             </Typography>
             {loading ? (
               <Skeleton variant="rectangular" height={220} sx={{ borderRadius: 2 }} />
             ) : stats && (
-              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
                 <BarChart
+                  tooltip={{ trigger: 'axis' }}
+                  margin={{ top: 20, right: 20, bottom: 30, left: 40 }}
                   xAxis={[{
                     scaleType: 'band' as const,
                     data: ['Available', 'Allocated', 'Maintenance', 'Retired'],

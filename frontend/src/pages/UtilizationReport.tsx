@@ -71,7 +71,7 @@ const UtilizationReport = () => {
           {/* Stat Cards */}
           <Grid container spacing={2.5} sx={{ mb: 4 }}>
             <Grid item xs={12} md={4}>
-              <Paper sx={{ p: 3, position: 'relative', overflow: 'hidden', background: 'rgba(15, 23, 42, 0.45)', backdropFilter: 'blur(20px)', border: '1px solid rgba(148,163,184,0.08)' }}>
+              <Paper sx={{ p: 3, position: 'relative', overflow: 'hidden', background: 'rgba(15, 23, 42, 0.45)', border: '1px solid rgba(148,163,184,0.08)' }}>
                 <Box sx={{ position: 'absolute', top: -10, right: -10, width: 70, height: 70, borderRadius: '50%', background: 'rgba(99,102,241,0.08)' }} />
                 <Box sx={{ width: 40, height: 40, borderRadius: 2, background: 'rgba(99,102,241,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#818cf8', mb: 2 }}>
                   <QueryStatsIcon />
@@ -82,7 +82,7 @@ const UtilizationReport = () => {
             </Grid>
 
             <Grid item xs={12} md={4}>
-              <Paper sx={{ p: 3, position: 'relative', overflow: 'hidden', background: 'rgba(15, 23, 42, 0.45)', backdropFilter: 'blur(20px)', border: '1px solid rgba(148,163,184,0.08)' }}>
+              <Paper sx={{ p: 3, position: 'relative', overflow: 'hidden', background: 'rgba(15, 23, 42, 0.45)', border: '1px solid rgba(148,163,184,0.08)' }}>
                 <Box sx={{ position: 'absolute', top: -10, right: -10, width: 70, height: 70, borderRadius: '50%', background: 'rgba(239,68,68,0.08)' }} />
                 <Box sx={{ width: 40, height: 40, borderRadius: 2, background: 'rgba(239,68,68,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f87171', mb: 2 }}>
                   <HourglassEmptyIcon />
@@ -108,94 +108,98 @@ const UtilizationReport = () => {
           <Grid container spacing={2.5} sx={{ mb: 4 }}>
             {/* Monthly Trend (Line Chart) */}
             <Grid item xs={12} md={6}>
-              <Paper sx={{ p: 3, background: 'rgba(15, 23, 42, 0.45)', backdropFilter: 'blur(20px)', border: '1px solid rgba(148,163,184,0.08)' }}>
+              <Paper sx={{ p: 3, background: 'rgba(15, 23, 42, 0.45)', border: '1px solid rgba(148,163,184,0.08)', backdropFilter: 'none !important' }}>
                 <Typography variant="h6" sx={{ fontWeight: 600, color: '#e2e8f0', mb: 3 }}>
                   Allocation Trend (Last 6 Months)
                 </Typography>
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                  <LineChart
-                    xAxis={[{
-                      scaleType: 'point',
-                      data: report.trend.map((t: any) => t.month),
-                      tickLabelStyle: { fill: '#94a3b8', fontSize: 11 },
-                    }]}
-                    yAxis={[{
-                      tickLabelStyle: { fill: '#64748b', fontSize: 11 },
-                    }]}
-                    series={[{
-                      data: report.trend.map((t: any) => t.allocations),
-                      color: '#6366f1',
-                      area: true,
-                      label: 'Allocations Filed',
-                    }]}
-                    width={500}
-                    height={260}
-                    sx={{
-                      '& .MuiAreaElement-root': {
-                        fill: 'url(#gradient-area)',
-                        opacity: 0.2,
-                      },
-                      "& .MuiChartsLegend-text": {
-                        fill: "#94a3b8 !important",
-                        fontSize: "11px !important",
-                      }
-                    }}
-                  >
-                    <defs>
-                      <linearGradient id="gradient-area" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#6366f1" />
-                        <stop offset="100%" stopColor="transparent" />
-                      </linearGradient>
-                    </defs>
-                  </LineChart>
-                </Box>
-              </Paper>
-            </Grid>
-
-            {/* Category Breakdown (Bar Chart) */}
-            <Grid item xs={12} md={6}>
-              <Paper sx={{ p: 3, background: 'rgba(15, 23, 42, 0.45)', backdropFilter: 'blur(20px)', border: '1px solid rgba(148,163,184,0.08)' }}>
-                <Typography variant="h6" sx={{ fontWeight: 600, color: '#e2e8f0', mb: 3 }}>
-                  Allocation Rate & Idle Assets by Category
-                </Typography>
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                  <BarChart
-                    xAxis={[{
-                      scaleType: 'band' as const,
-                      data: report.categories.map((c: any) => c.category.replace('_', ' ')),
-                      tickLabelStyle: { fill: '#94a3b8', fontSize: 10 },
-                    }]}
-                    yAxis={[
-                      {
+                <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+                    <LineChart
+                      tooltip={{ trigger: 'axis' }}
+                      margin={{ top: 20, right: 20, bottom: 30, left: 40 }}
+                      xAxis={[{
+                        scaleType: 'point',
+                        data: report.trend.map((t: any) => t.month),
+                        tickLabelStyle: { fill: '#94a3b8', fontSize: 11 },
+                      }]}
+                      yAxis={[{
                         tickLabelStyle: { fill: '#64748b', fontSize: 11 },
-                        label: 'Rate (%) / Idle Count',
-                      }
-                    ]}
-                    series={[
-                      {
-                        data: report.categories.map((c: any) => c.allocated_percent),
+                      }]}
+                      series={[{
+                        data: report.trend.map((t: any) => t.allocations),
                         color: '#6366f1',
-                        label: 'Allocated (%)',
-                      },
-                      {
-                        data: report.categories.map((c: any) => c.idle_count),
-                        color: '#f59e0b',
-                        label: 'Idle Qty',
-                      }
-                    ]}
-                    width={500}
-                    height={260}
-                    borderRadius={6}
-                    sx={{
-                      '& .MuiBarElement-root': {
-                        rx: 4,
-                      },
-                      "& .MuiChartsLegend-text": {
-                        fill: "#94a3b8 !important",
-                        fontSize: "11px !important",
-                      }
-                    }}
-                  />
+                        area: true,
+                        label: 'Allocations Filed',
+                      }]}
+                      width={500}
+                      height={260}
+                      sx={{
+                        '& .MuiAreaElement-root': {
+                          fill: 'url(#gradient-area)',
+                          opacity: 0.2,
+                        },
+                        "& .MuiChartsLegend-text": {
+                          fill: "#94a3b8 !important",
+                          fontSize: "11px !important",
+                        }
+                      }}
+                    >
+                      <defs>
+                        <linearGradient id="gradient-area" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#6366f1" />
+                          <stop offset="100%" stopColor="transparent" />
+                        </linearGradient>
+                      </defs>
+                    </LineChart>
+                  </Box>
+                </Paper>
+              </Grid>
+  
+              {/* Category Breakdown (Bar Chart) */}
+              <Grid item xs={12} md={6}>
+                <Paper sx={{ p: 3, background: 'rgba(15, 23, 42, 0.45)', border: '1px solid rgba(148,163,184,0.08)', backdropFilter: 'none !important' }}>
+                  <Typography variant="h6" sx={{ fontWeight: 600, color: '#e2e8f0', mb: 3 }}>
+                    Allocation Rate & Idle Assets by Category
+                  </Typography>
+                  <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+                    <BarChart
+                      tooltip={{ trigger: 'axis' }}
+                      margin={{ top: 20, right: 20, bottom: 30, left: 40 }}
+                      xAxis={[{
+                        scaleType: 'band' as const,
+                        data: report.categories.map((c: any) => c.category.replace('_', ' ')),
+                        tickLabelStyle: { fill: '#94a3b8', fontSize: 10 },
+                      }]}
+                      yAxis={[
+                        {
+                          tickLabelStyle: { fill: '#64748b', fontSize: 11 },
+                          label: 'Rate (%) / Idle Count',
+                        }
+                      ]}
+                      series={[
+                        {
+                          data: report.categories.map((c: any) => c.allocated_percent),
+                          color: '#6366f1',
+                          label: 'Allocated (%)',
+                        },
+                        {
+                          data: report.categories.map((c: any) => c.idle_count),
+                          color: '#f59e0b',
+                          label: 'Idle Qty',
+                        }
+                      ]}
+                      width={500}
+                      height={260}
+                      borderRadius={6}
+                      sx={{
+                        '& .MuiBarElement-root': {
+                          rx: 4,
+                        },
+                        "& .MuiChartsLegend-text": {
+                          fill: "#94a3b8 !important",
+                          fontSize: "11px !important",
+                        }
+                      }}
+                    />
                 </Box>
               </Paper>
             </Grid>

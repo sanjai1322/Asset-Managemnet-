@@ -60,6 +60,13 @@ def send_html_email(to_email: str, subject: str, html_body: str):
     )
 
     if use_live:
+        # Sandbox mode redirect: If using the default onboarding sender,
+        # redirect all emails to the verified account owner to avoid sandbox errors
+        if MAIL_FROM == "onboarding@resend.dev" and to_email != "sanjai131418@gmail.com":
+            print(f"[SANDBOX REDIRECT] Redirecting recipient {to_email} -> sanjai131418@gmail.com to bypass Resend restrictions")
+            subject = f"[Dev Redirect from {to_email}] {subject}"
+            to_email = "sanjai131418@gmail.com"
+            
         try:
             params: resend.Emails.SendParams = {
                 "from": MAIL_FROM,

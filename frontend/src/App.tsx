@@ -34,6 +34,8 @@ import SentEmails from './pages/SentEmails';
 import ActivityLog from './pages/ActivityLog';
 import AssetVerification from './pages/AssetVerification';
 import UtilizationReport from './pages/UtilizationReport';
+import NotificationPreferences from './pages/NotificationPreferences';
+import Analytics from './pages/Analytics';
 
 import HistoryIcon from '@mui/icons-material/History';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
@@ -116,6 +118,8 @@ const pageTitles: Record<string, string> = {
   '/audit/logs': 'Activity Audit Log',
   '/audit/verification': 'Asset Verification Checklist',
   '/audit/utilization': 'Utilization Report',
+  '/analytics': 'Enterprise Analytics',
+  '/settings/notifications': 'Notification Preferences',
 };
 
 // ─── Layout ────────────────────────────────────────────────────────
@@ -270,6 +274,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     { text: 'Allocations', icon: <AssignmentIcon />, path: '/allocations' },
     { text: 'Maintenance', icon: <BuildIcon />, path: '/maintenance' },
     { text: 'AI Predictive', icon: <SmartToyIcon />, path: '/predictive' },
+    { text: 'Enterprise Analytics', icon: <AssessmentIcon />, path: '/analytics' },
     { text: 'Sent Emails', icon: <EmailIcon />, path: '/sent-emails' },
   ];
 
@@ -277,6 +282,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     { text: 'Activity Log', icon: <HistoryIcon />, path: '/audit/logs' },
     { text: 'Asset Verification', icon: <VerifiedUserIcon />, path: '/audit/verification' },
     { text: 'Utilization Report', icon: <AssessmentIcon />, path: '/audit/utilization' },
+    { text: 'Notifications', icon: <NotificationsIcon />, path: '/settings/notifications' },
   ];
 
   const pageTitle = pageTitles[location.pathname] || 'Asset Management';
@@ -893,10 +899,12 @@ function App() {
             <Route path="/allocations" element={<PrivateRoute><Allocations /></PrivateRoute>} />
             <Route path="/maintenance" element={<PrivateRoute><Maintenance /></PrivateRoute>} />
             <Route path="/predictive" element={<PrivateRoute><PredictiveMaintenance /></PrivateRoute>} />
+            <Route path="/analytics" element={<PrivateRoute><Analytics /></PrivateRoute>} />
             <Route path="/sent-emails" element={<PrivateRoute><SentEmails /></PrivateRoute>} />
             <Route path="/audit/logs" element={<PrivateRoute><ActivityLog /></PrivateRoute>} />
             <Route path="/audit/verification" element={<PrivateRoute><AssetVerification /></PrivateRoute>} />
             <Route path="/audit/utilization" element={<PrivateRoute><UtilizationReport /></PrivateRoute>} />
+            <Route path="/settings/notifications" element={<PrivateRoute><NotificationPreferences /></PrivateRoute>} />
           </Routes>
         </BrowserRouter>
       </ToastProvider>

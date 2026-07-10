@@ -163,3 +163,5 @@ export const getUtilizationReport = async () => {
   return response.data;
 };
 
+export default api;
+

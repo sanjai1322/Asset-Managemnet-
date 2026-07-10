@@ -6,3 +6,6 @@ __pycache__/
 .DS_Store
 dist/
 build/
+# SQLite database files (legacy - project now uses PostgreSQL)
+*.db
+*.txt

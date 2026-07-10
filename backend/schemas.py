@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from datetime import date, datetime
 from typing import Optional, List, Dict
 from models import CategoryEnum, StatusEnum
@@ -112,6 +112,16 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
+    pref_email: bool = True
+    pref_slack: bool = True
+    pref_push: bool = True
+
+    @field_validator('pref_email', 'pref_slack', 'pref_push', mode='before')
+    @classmethod
+    def default_to_true(cls, v):
+        if v is None:
+            return True
+        return v
 
     class Config:
         from_attributes = True
@@ -123,6 +133,15 @@ class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
     user: User
+
+class UserPreferences(BaseModel):
+    pref_email: bool
+    pref_slack: bool
+    pref_push: bool
+
+class FcmTokenRegister(BaseModel):
+    token: str
+
 
 class SentEmail(BaseModel):
     to: str
